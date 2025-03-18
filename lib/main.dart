@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sound_nest/data/model/song.dart';
 import 'package:sound_nest/data/repository/repository.dart';
 import 'package:sound_nest/ui/discovery/discovery.dart';
 import 'package:sound_nest/ui/home/home.dart';
