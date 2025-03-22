@@ -32,7 +32,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
   List<Song> songs = [];
   late  MusicAppViewModel _viewModel =  MusicAppViewModel();
 
-  @override
   initState(){
     _viewModel = MusicAppViewModel();
     _viewModel.loadSongs();
@@ -47,6 +46,12 @@ class _HomeTabPageState extends State<HomeTabPage> {
     return Scaffold(
       body: getBody(),
     );
+  }
+
+  @override
+  dispose(){
+    super.dispose();
+    _viewModel.songStream.close();
   }
 
   Widget getBody(){
@@ -65,38 +70,24 @@ class _HomeTabPageState extends State<HomeTabPage> {
     );
   }
 
-  Widget getListView(){
+  ListView getListView(){
     return ListView.separated(
-      itemCount: songs.length,
-      shrinkWrap: true,
-      separatorBuilder: (context, index) => const Divider(
-        color: Colors.grey,
-        thickness: 1,
-        indent: 20,
-        endIndent: 20,
-      ),
-      itemBuilder: (context, position) {
-         return getRow(position);
-      }
+        itemCount: songs.length,
+        shrinkWrap: true,
+        separatorBuilder: (context, index) => const Divider(
+          color: Colors.grey,
+          thickness: 1,
+          indent: 20,
+          endIndent: 20,
+        ),
+        itemBuilder: (context, position) {
+          return getRow(position);
+        }
     );
   }
 
   Widget getRow(int index){
-    return Container(
-      padding: EdgeInsets.only(left: 20),
-        child: Row(
-          children: [
-            Image.network(songs[index].image, width: 50, height: 50,),
-            SizedBox(width: 10,),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(songs[index].title),
-                Text(songs[index].artist),
-              ],
-            ),
-          ],
-        ));
+    return _SongItemSection(parent: this , song: songs[index]);
   }
 
   void observeData(){
@@ -108,3 +99,42 @@ class _HomeTabPageState extends State<HomeTabPage> {
   }
 }
 
+
+class _SongItemSection extends StatelessWidget {
+   const _SongItemSection({
+     required this.parent,
+     required this.song,
+   });
+
+  final _HomeTabPageState parent;
+  final Song song;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.only(left: 20, right: 20),
+      leading: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: FadeInImage.assetNetwork(placeholder: 'assets/images/loading.jpg',
+            image: song.image,
+            width: 50,
+            height: 50,
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset('assets/images/loading.jpg',
+                width: 50,
+                height: 50,
+
+              );
+            }
+        ),
+      ),
+      title: Text(song.title, style: const TextStyle(fontWeight: FontWeight.bold)),
+      subtitle: Text(song.artist),
+      trailing: IconButton(
+          icon: const Icon(Icons.more_horiz),
+          onPressed: (){},
+      )
+    );
+  }
+
+}
