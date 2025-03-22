@@ -29,8 +29,8 @@ class MusicApp extends StatelessWidget {
     return MaterialApp(
       title: 'Music App',
       theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
       ),
       home: const MusicAppPage(
 
@@ -62,14 +62,14 @@ class _MusicAppPageState extends State<MusicAppPage> {
       ),
       child: CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(icon: Icon(Icons.album_rounded), label: 'Discovery'),
-              BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
-              BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.album_rounded), label: 'Discovery'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+            BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
 
-            ],
-            backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,),
+          ],
+          backgroundColor: Theme.of(context).colorScheme.onPrimaryContainer,),
         tabBuilder: (BuildContext context, int index){
           return _tabs[index];
         },
