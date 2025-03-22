@@ -48,12 +48,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
     );
   }
 
-  @override
-  dispose(){
-    super.dispose();
-    _viewModel.songStream.close();
-  }
-
   Widget getBody(){
     bool showLoading = songs.isEmpty;
     if(showLoading){
@@ -70,24 +64,38 @@ class _HomeTabPageState extends State<HomeTabPage> {
     );
   }
 
-  ListView getListView(){
+  Widget getListView(){
     return ListView.separated(
-        itemCount: songs.length,
-        shrinkWrap: true,
-        separatorBuilder: (context, index) => const Divider(
-          color: Colors.grey,
-          thickness: 1,
-          indent: 20,
-          endIndent: 20,
-        ),
-        itemBuilder: (context, position) {
-          return getRow(position);
-        }
+      itemCount: songs.length,
+      shrinkWrap: true,
+      separatorBuilder: (context, index) => const Divider(
+        color: Colors.grey,
+        thickness: 1,
+        indent: 20,
+        endIndent: 20,
+      ),
+      itemBuilder: (context, position) {
+         return getRow(position);
+      }
     );
   }
 
   Widget getRow(int index){
-    return _SongItemSection(parent: this , song: songs[index]);
+    return Container(
+      padding: EdgeInsets.only(left: 20),
+        child: Row(
+          children: [
+            Image.network(songs[index].image, width: 50, height: 50,),
+            SizedBox(width: 10,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(songs[index].title),
+                Text(songs[index].artist),
+              ],
+            ),
+          ],
+        ));
   }
 
   void observeData(){
@@ -97,45 +105,5 @@ class _HomeTabPageState extends State<HomeTabPage> {
       });
     });
   }
-}
-
-
-class _SongItemSection extends StatelessWidget {
-   _SongItemSection({
-     required this.parent,
-     required this.song,
-   });
-
-  final _HomeTabPageState parent;
-  final Song song;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(left: 20, right: 20),
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: FadeInImage.assetNetwork(placeholder: 'assets/images/loading.jpg',
-            image: song.image,
-            width: 50,
-            height: 50,
-            imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset('assets/images/loading.jpg',
-                width: 50,
-                height: 50,
-
-              );
-            }
-        ),
-      ),
-      title: Text(song.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-      subtitle: Text(song.artist),
-      trailing: IconButton(
-          icon: const Icon(Icons.more_horiz),
-          onPressed: (){},
-      )
-    );
-  }
-
 }
 
