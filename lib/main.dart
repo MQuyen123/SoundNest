@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sound_nest/data/model/song.dart';
 import 'package:sound_nest/data/repository/repository.dart';
 import 'package:sound_nest/ui/discovery/discovery.dart';
 import 'package:sound_nest/ui/home/home.dart';
@@ -8,16 +7,6 @@ import 'package:sound_nest/ui/setting/setting.dart';
 import 'package:sound_nest/ui/user/user.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  var repo = DefaultRepository();
-  var songs = await repo.loadData();
-  if (songs != null) {
-    songs.forEach((song) {
-      debugPrint(song.title);
-    });
-  } else {
-    debugPrint('Failed to load songs');
-  }
   runApp(MusicApp());
 }
 
@@ -33,9 +22,8 @@ class MusicApp extends StatelessWidget {
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)
       ),
-      home: const MusicAppPage(
-
-      ),
+      home: const MusicAppPage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
